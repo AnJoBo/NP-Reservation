@@ -9,6 +9,7 @@ public class Menu {
 
 	private PrintWriter out;
 	private Scanner in;
+	private boolean mainMenu = true;
 
 	public Menu(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output);
@@ -27,6 +28,9 @@ public class Menu {
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
 		String userInput = in.nextLine();
+		if (userInput.equals("Q") || userInput.equals("q") && mainMenu) {
+			System.exit(0);
+		}
 		try {
 			int selectedOption = Integer.valueOf(userInput);
 			if(selectedOption <= options.length) {
@@ -38,6 +42,7 @@ public class Menu {
 		if(choice == null) {
 			out.println("\n*** "+userInput+" is not a valid option ***\n");
 		}
+		mainMenu = false;
 		return choice;
 	}
 
@@ -47,7 +52,15 @@ public class Menu {
 			int optionNum = i+1;
 			out.println(optionNum+") "+options[i]);
 		}
+		showQuit();
 		out.print("\nPlease choose an option >>> ");
 		out.flush();
 	}
+	
+	private void showQuit() {
+		if(mainMenu) {
+			out.print("Q) Quit\n");
+		}
+	}
+	
 }

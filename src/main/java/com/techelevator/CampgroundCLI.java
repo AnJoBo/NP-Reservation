@@ -8,18 +8,21 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import com.techelevator.project.model.Campground;
 import com.techelevator.project.model.CampgroundDAO;
 import com.techelevator.project.model.CampgroundJDBCDAO;
-import com.techelevator.project.model.Campsite;
 import com.techelevator.project.model.CampsiteDAO;
 import com.techelevator.project.model.CampsiteJDBCDAO;
 import com.techelevator.project.model.Park;
 import com.techelevator.project.model.ParkDAO;
 import com.techelevator.project.model.ParkJDBCDAO;
+import com.techelevator.project.model.Reservation;
+import com.techelevator.project.model.ReservationDAO;
+import com.techelevator.project.model.ReservationJDBCDAO;
 
 public class CampgroundCLI {
 
 	private ParkDAO parkDAO;
 	private CampgroundDAO campgroundDAO;
 	private CampsiteDAO campsiteDAO;
+	private ReservationDAO reservationDAO;
 	private Menu menu;
 
 	public static void main(String[] args) {
@@ -38,39 +41,49 @@ public class CampgroundCLI {
 		parkDAO = new ParkJDBCDAO(dataSource);
 		campgroundDAO = new CampgroundJDBCDAO(dataSource);
 		campsiteDAO = new CampsiteJDBCDAO(dataSource);
+		reservationDAO = new ReservationJDBCDAO(dataSource);
 
 	}
 
 	public void run() {
-		Scanner input = new Scanner(System.in);                                                                                                                
-		List<Park> allParks = parkDAO.getAllParks();
-		Park[] park = new Park[allParks.size()];
-		park = allParks.toArray(park);		
+		Scanner input = new Scanner(System.in);
+		System.out.println("\nSelect a Park for Further Details");
+		List<Park> parkList = parkDAO.getAllParks();
+		Park[] parkArray = new Park[parkList.size()];
+		parkArray = parkList.toArray(parkArray);		
 
-		Park actualPark = (Park)menu.getChoiceFromOptions(park);
+		Park chosenPark = (Park)menu.getChoiceFromOptions(parkArray);
 	
-		String strDate = String.format("Established: %1$td %1$tB %1$tY", actualPark.getEstablishDate());
-		System.out.printf("%n%s National Park%nLocation: %s %n%s %nArea: %d sq km%nAnnual Visitors: %d %n%n %s",
-				actualPark.getName(), actualPark.getLocation(), strDate, actualPark.getArea(), actualPark.getVisitors(), actualPark.getDescription());
+		String strDate = String.format("Established: %1$td %1$tB %1$tY", chosenPark.getEstablishDate());
+		System.out.printf("%n%s National Park%nLocation: %s %n%s %nArea: %d sq km%nAnnual Visitors: %d %n%n %s%n",
+				chosenPark.getName(), chosenPark.getLocation(), strDate, chosenPark.getArea(), chosenPark.getVisitors(), chosenPark.getDescription());
 		
-		List<Campground> allCamps = campgroundDAO.getAllCampgrounds(actualPark);
-		Campground[] campground = new Campground[allCamps.size()];
-		campground = allCamps.toArray(campground);	
+		List<Campground> campgroundList = campgroundDAO.getAllCampgrounds(chosenPark);
+		Campground[] campgroundArray = new Campground[campgroundList.size()];
+		campgroundArray = campgroundList.toArray(campgroundArray);	
 		
-//		System.out.printf("%n%n%12s %12s %10s %13s", "Name", "Open", "Close", "Daily Fee");
-		Campground actualCampgrounds = (Campground)menu.getChoiceFromOptions(campground);
+		System.out.println("\nSelect a Campground");
+		System.out.printf("%12s %12s %10s %13s", "Name", "Open", "Close", "Daily Fee");
+		Campground chosenCampground = (Campground)menu.getChoiceFromOptions(campgroundArray);
 		
-		System.out.println("What is the arrival date (yyyy-mm-dd)?");
-		String variable2 = input.nextLine();
 		
-		System.out.println("What is the departure date (yyyy-mm-dd)?");
-		String variable3 = input.nextLine();
+		System.out.println("What is the arrival date (mm/dd/yyyy)?");
+		String arrivalString = input.nextLine();
 		
-		List<Campsite> allSite = campsiteDAO.getAllSites(actualCampgrounds);
-		Campsite[] campsite = new Campsite[allSite.size()];
-		campsite = allSite.toArray(campsite);	
+		System.out.println("What is the departure date (mm/dd/yyyy)?");
+		String departureString = input.nextLine();
 		
-		Campsite actualSites = (Campsite)menu.getChoiceFromOptions(campsite);
+		List<Reservation> reservationList = reservationDAO.getAvailableRes(arrivalString, departureString, chosenCampground.getName());
+		
+		if (reservationList.size() > 0) {
+			System.out.println("Sorry there are no available sites, please choose another date range.");
+		}
+		
+//		List<Campsite> campsiteList = campsiteDAO.getAllSites(chosenCampground);
+//		Campsite[] campsiteArray = new Campsite[campsiteList.size()];
+//		campsiteArray = campsiteList.toArray(campsiteArray);	
+//		
+//		Campsite chosenCampsite = (Campsite)menu.getChoiceFromOptions(campsiteArray);
 		
 		// TO DO: figure out step 3A with our user inputs.
 		

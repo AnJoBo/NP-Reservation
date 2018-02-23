@@ -26,13 +26,13 @@ public class CampsiteJDBCDAO implements CampsiteDAO{
 			SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetSite, actualCampground.getCampgroundId());
 			
 			while (results.next()) {
-				Campsite theCampsite = mapRowToParks(results);
+				Campsite theCampsite = mapRowToCampsite(results);
 				campsiteList.add(theCampsite);
 				
 			}
 			return campsiteList;
 		}
-	private Campsite mapRowToParks(SqlRowSet results) {
+	private Campsite mapRowToCampsite(SqlRowSet results) {
 		Campsite theCampsite;
 		theCampsite = new Campsite();
 		theCampsite.setSiteId(results.getLong("site_number"));
