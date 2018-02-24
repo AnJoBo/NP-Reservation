@@ -1,5 +1,7 @@
 package com.techelevator.project.model;
 
+import java.math.BigDecimal;
+
 public class Campsite {
 	
 	private Long siteId;
@@ -9,6 +11,9 @@ public class Campsite {
 	private boolean accessible = false;
 	private int maximumLength;
 	private boolean utilities = false;
+	private BigDecimal dailyFee;
+	private BigDecimal totalFee;
+	private long totalDays;
 	
 	
 	public Long getSiteId() {
@@ -54,11 +59,26 @@ public class Campsite {
 		this.utilities = utilities;
 	}
 	
+	public void setTotalDays(long totalDays) {
+		this.totalDays = totalDays;
+	}
+	
+	public long getTotalDays() {
+		return totalDays;
+	}
+	
 	@Override
 	public String toString() {
-		return "" + siteId + ", campgroundId=" + campgroundId + ", siteNumber=" + siteNumber
-				+ ", maxOccupancy=" + maxOccupancy + ", accessible=" + accessible + ", maximumLength=" + maximumLength
-				+ ", utilities=" + utilities;
+		return String.format("%3s %3s %3s %6s %6.2f"
+		, siteNumber, maxOccupancy,maximumLength, utilities, (dailyFee.multiply(new BigDecimal(getTotalDays()))));
 	}
+	public BigDecimal getDailyFee() {
+		return dailyFee;
+	}
+	public void setDailyFee(BigDecimal dailyFee) {
+		this.dailyFee = dailyFee;
+	}
+
+
 
 }

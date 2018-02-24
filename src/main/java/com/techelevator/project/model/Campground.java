@@ -1,5 +1,6 @@
 package com.techelevator.project.model;
 
+import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 
 public class Campground {
@@ -9,7 +10,7 @@ public class Campground {
 	private String name;
 	private int openFrom;
 	private int openTo;
-	private Double dailyFee;
+	private BigDecimal dailyFee;
 	
 	
 	public Long getCampgroundId() {
@@ -42,10 +43,10 @@ public class Campground {
 	public void setOpenTo(int openTo) {
 		this.openTo = openTo;
 	}
-	public Double getDailyFee() {
+	public BigDecimal getDailyFee() {
 		return dailyFee;
 	}
-	public void setDailyFee(Double dailyFee) {
+	public void setDailyFee(BigDecimal dailyFee) {
 		this.dailyFee = dailyFee;
 	}
 	@Override

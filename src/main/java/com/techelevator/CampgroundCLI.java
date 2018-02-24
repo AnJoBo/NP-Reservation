@@ -1,5 +1,9 @@
 package com.techelevator;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,6 +12,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import com.techelevator.project.model.Campground;
 import com.techelevator.project.model.CampgroundDAO;
 import com.techelevator.project.model.CampgroundJDBCDAO;
+import com.techelevator.project.model.Campsite;
 import com.techelevator.project.model.CampsiteDAO;
 import com.techelevator.project.model.CampsiteJDBCDAO;
 import com.techelevator.project.model.Park;
@@ -73,32 +78,53 @@ public class CampgroundCLI {
 		System.out.println("What is the departure date (mm/dd/yyyy)?");
 		String departureString = input.nextLine();
 		
-		List<Reservation> reservationList = reservationDAO.getAvailableRes(arrivalString, departureString, chosenCampground.getName());
+		
+		List<Reservation> reservationList = reservationDAO.checkReservations(arrivalString, departureString, chosenCampground.getName());
+		List<Campsite> campsiteList = campsiteDAO.getOpenReservations(arrivalString, departureString, chosenCampground.getName());
+		
+		Campsite[] campsiteArray = new Campsite[campsiteList.size()];
+		campsiteArray = campsiteList.toArray(campsiteArray);
+		
+		//System.out.println("\nSelect a Campground");
+		//System.out.printf("%12s %12s %10s %13s", "Name", "Open", "Close", "Daily Fee");
+		Campsite availableCampsites = (Campsite)menu.getChoiceFromOptions(campsiteArray);
+
 		
 		if (reservationList.size() > 0) {
 			System.out.println("Sorry there are no available sites, please choose another date range.");
+			
+		}
+		else {
+			System.out.println(campsiteList);
 		}
 		
-//		List<Campsite> campsiteList = campsiteDAO.getAllSites(chosenCampground);
-//		Campsite[] campsiteArray = new Campsite[campsiteList.size()];
-//		campsiteArray = campsiteList.toArray(campsiteArray);	
-//		
-//		Campsite chosenCampsite = (Campsite)menu.getChoiceFromOptions(campsiteArray);
-		
-		// TO DO: figure out step 3A with our user inputs.
 		
 	}
 	
-//	public void displayApplicationBanner() {
-//		System.out.println(" __    __              __      __                                __        _______                      __  " );              
-//		System.out.println("//\\  /  |            /  |    /  |                              /  |      /       \                    /  |    ");            
-//		System.out.println("$$  \ $$ |  ______   _$$ |_   $$/   ______   _______    ______  $$ |      $$$$$$$  | ______    ______  $$ |   __   _______ ");
-//		System.out.println("$$$  \$$ | /      \ / $$   |  /  | /      \ /       \  /      \ $$ |      $$ |__$$ |/      \  /      \ $$ |  /  | /       |");
-//		System.out.println("$$$$  $$ | $$$$$$  |$$$$$$/   $$ |/$$$$$$  |$$$$$$$  | $$$$$$  |$$ |      $$    $$/ $$$$$$  |/$$$$$$  |$$ |_/$$/ /$$$$$$$/ ");
-//		System.out.println("$$ $$ $$ | /    $$ |  $$ | __ $$ |$$ |  $$ |$$ |  $$ | /    $$ |$$ |      $$$$$$$/  /    $$ |$$ |  $$/ $$   $$<  $$      \ ");
-//		System.out.println("$$ |$$$$ |/$$$$$$$ |  $$ |/  |$$ |$$ \__$$ |$$ |  $$ |/$$$$$$$ |$$ |      $$ |     /$$$$$$$ |$$ |      $$$$$$  \  $$$$$$  |");
-//		System.out.println("$$ | $$$ |$$    $$ |  $$  $$/ $$ |$$    $$/ $$ |  $$ |$$    $$ |$$ |      $$ |     $$    $$ |$$ |      $$ | $$  |/     $$/ ");
-//		System.out.println("$$/   $$/  $$$$$$$/    $$$$/  $$/  $$$$$$/  $$/   $$/  $$$$$$$/ $$/       $$/       $$$$$$$/ $$/       $$/   $$/ $$$$$$$/ " );
-//		System.out.println();
+//	public BigDecimal handleTotalFee(String start, String end, BigDecimal dailyFee) {
+//		LocalDate arrivalDate = parseDate(start);
+//		LocalDate departureDate = parseDate(end);
+//
+//		long days = ChronoUnit.DAYS.between(arrivalDate, departureDate);
+//		
+//		BigDecimal totalDays = new BigDecimal(days);
+//		BigDecimal totalFee = totalDays.multiply(dailyFee);
+//		return totalFee;
+//	}
+//	
+//	public LocalDate parseDate(String userInput) {
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+//
+//		LocalDate date = LocalDate.parse(userInput, formatter);
+//		return date;
+//	}
+//	public LocalDate parseLocalDate(String input) {
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//
+//		LocalDate date = null;
+//		date = (LocalDate) formatter.parse(input);
+//		return date;
 //	}
 }
+	
+

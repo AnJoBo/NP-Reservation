@@ -1,5 +1,7 @@
 package com.techelevator.project.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Reservation {
@@ -7,9 +9,10 @@ public class Reservation {
 	private Long reservationId;
 	private int siteId;
 	private String name;
-	private Date fromDate;
-	private Date toDate;
-	private Date createDate;
+	private LocalDate fromDate;
+	private LocalDate toDate;
+	private LocalDate createDate;
+	private long totalDays;
 	
 	
 	public Long getReservationId() {
@@ -30,28 +33,34 @@ public class Reservation {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getFromDate() {
+	public LocalDate getFromDate() {
 		return fromDate;
 	}
-	public void setFromDate(Date fromDate) {
+	public void setFromDate(LocalDate fromDate) {
 		this.fromDate = fromDate;
 	}
-	public Date getToDate() {
+	public LocalDate getToDate() {
 		return toDate;
 	}
-	public void setToDate(Date toDate) {
+	public void setToDate(LocalDate toDate) {
 		this.toDate = toDate;
 	}
-	public Date getCreateDate() {
+	public LocalDate getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(LocalDate createDate) {
 		this.createDate = createDate;
 	}
 	@Override
 	public String toString() {
 		return "Reservation [reservationId=" + reservationId + ", siteId=" + siteId + ", name=" + name + ", fromDate="
 				+ fromDate + ", toDate=" + toDate + ", createDate=" + createDate + "]";
+	}
+	public long getTotalDays() {
+		return totalDays;
+	}
+	public void setTotalDays(long days) {
+		this.totalDays = days;
 	}
 	
 	
