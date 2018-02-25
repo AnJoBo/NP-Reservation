@@ -76,7 +76,7 @@ public class ReservationJDBCDAO implements ReservationDAO {
 
 	@Override
 	public LocalDate parseDate(String userInput) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
 		LocalDate date = LocalDate.parse(userInput, formatter);
 		return date;

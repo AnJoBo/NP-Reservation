@@ -74,9 +74,9 @@ public class CampgroundCLI {
 		
 		// --
 		Scanner input = new Scanner(System.in);
-		System.out.println("\nWhat is your arrival date (mm/dd/yyyy)?");
+		System.out.println("\nWhat is your arrival date (yyyy/MM/dd)?");
 		String arrivalString = input.nextLine();
-		System.out.println("What is your departure date (mm/dd/yyyy)?");
+		System.out.println("What is your departure date (yyyy/MM/dd)?");
 		String departureString = input.nextLine();
 		
 		

@@ -16,7 +16,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 public class CampsiteJDBCDAO implements CampsiteDAO{
 	
 	private JdbcTemplate jdbcTemplate;
-	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public CampsiteJDBCDAO(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -62,7 +62,7 @@ public class CampsiteJDBCDAO implements CampsiteDAO{
 	
 	@Override
 	public LocalDate parseDate(String userInput) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		LocalDate date = LocalDate.parse(userInput, formatter);
 		return date;
