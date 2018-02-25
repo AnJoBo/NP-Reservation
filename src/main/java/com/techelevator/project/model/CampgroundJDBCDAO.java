@@ -12,17 +12,17 @@ public class CampgroundJDBCDAO implements CampgroundDAO{
 	
 	private JdbcTemplate jdbcTemplate;
 	
+	// Constructor
 	public CampgroundJDBCDAO(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
+	
 	@Override
 	public List<Campground> getAllCampgrounds(Park chosenPark) {
 		List<Campground> campgroundList = new ArrayList<>();
-		
 		String sqlGetCamp = "Select * FROM campground WHERE park_id = ?";
-		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetCamp, chosenPark.getId());
-		
+
 		while (results.next()) {
 			Campground theCampground = mapRowToParks(results);
 			campgroundList.add(theCampground);

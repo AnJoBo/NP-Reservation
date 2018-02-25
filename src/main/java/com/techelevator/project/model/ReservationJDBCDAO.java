@@ -1,6 +1,5 @@
 package com.techelevator.project.model;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +37,16 @@ public class ReservationJDBCDAO implements ReservationDAO {
 		}
 		return reservationList;
 	}
+	
+	public long placeReservation(Campsite chosenSite, String userName, String userInput1, String userInput2) {
+		String placeReservation = 
+				"INSERT INTO reservation (site_id, name, from_date, to_date) VALUES (?, ?, ?, ?) " +
+				"RETURNING reservation_id ";
+		long newReservationId = jdbcTemplate.queryForObject(placeReservation, Long.class, chosenSite.getSiteId(), userName, parseDate(userInput1), parseDate(userInput2));
+		
+		return newReservationId;
+	}
+
 
 	public Reservation totalDays(String userInput, String userInput2) {
 		Reservation theReservation;

@@ -12,4 +12,6 @@ public interface ReservationDAO {
 	public LocalDate parseDate(String userInput);
 	
 	public Reservation totalDays(String userInput, String userInput2);
+	
+	public long placeReservation(Campsite chosenSite, String userName, String userInput1, String userInput2); 
 }

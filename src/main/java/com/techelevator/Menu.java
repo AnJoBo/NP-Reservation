@@ -24,12 +24,24 @@ public class Menu {
 		}
 		return choice;
 	}
+	
+	public Object getChoiceSiteOptions(Object[] options) {
+		Object choice = null;
+		while(choice == null) {
+			displaySiteOptions(options);
+			choice = getChoiceFromUserInput(options);
+		}
+		return choice;
+	}
 
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
 		String userInput = in.nextLine();
 		if (userInput.equals("Q") || userInput.equals("q") && mainMenu) {
 			System.exit(0);
+		}
+		if (userInput.equals("R") || userInput.equals("r") && !mainMenu) {
+			//TODO: Enter logic
 		}
 		try {
 			int selectedOption = Integer.valueOf(userInput);
@@ -53,13 +65,32 @@ public class Menu {
 			out.println(optionNum+") "+options[i]);
 		}
 		showQuit();
+		showReturnToPreviousMenu();
 		out.print("\nPlease choose an option >>> ");
+		out.flush();
+	}
+	
+	 private void displaySiteOptions(Object[] options) {
+		out.println();
+		for(int i = 0; i < options.length; i++) {
+			int optionNum = i+1;
+			out.println(optionNum+") "+options[i]);
+		}
+		showQuit();
+		showReturnToPreviousMenu();
+		out.print("\nWhich site should be reserved (enter 0 to cancel)? >>> ");
 		out.flush();
 	}
 	
 	private void showQuit() {
 		if(mainMenu) {
-			out.print("Q) Quit\n");
+			out.print("\nQ) Quit\n");
+		}
+	}
+	
+	private void showReturnToPreviousMenu() {
+		if(!mainMenu) {
+			out.print("\nR) Return to Previous Screen\n");
 		}
 	}
 	

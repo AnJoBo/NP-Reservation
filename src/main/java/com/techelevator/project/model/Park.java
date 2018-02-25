@@ -1,14 +1,14 @@
 package com.techelevator.project.model;
 
 import java.time.LocalDate;
-import java.util.Date;
+//import java.util.Date;
 
 public class Park {
 	
 	private Long id;
 	private String name;
 	private String location;
-	private Date establishDate;
+	private LocalDate establishDate;
 	private Integer area;
 	private Integer visitors;
 	private String description;
@@ -18,56 +18,65 @@ public class Park {
 		return id;
 	}
 
-	public String getName() {
-		return name;
-	}
-	public String getLocation() {
-		return location;
-	}
-	public Date getEstablishDate() {
-		return establishDate;
-	}
-	public Integer getArea() {
-		return area;
-	}
-	public Integer getVisitors() {
-		return visitors;
-	}
-	public String getDescription() {
-		//logic to wrap text
-		return description;
-	}
-	
-	public String toString() {
-		return name;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	public String getName() {
+		return name;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getLocation() {
+		return location;
 	}
 
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
-	public void setEstablishDate(Date establishDate) {
+	public LocalDate getEstablishDate() {
+		return establishDate;
+	}
+
+	public void setEstablishDate(LocalDate establishDate) {
 		this.establishDate = establishDate;
+	}
+
+	public Integer getArea() {
+		return area;
 	}
 
 	public void setArea(Integer area) {
 		this.area = area;
 	}
 
+	public Integer getVisitors() {
+		return visitors;
+	}
+
 	public void setVisitors(Integer visitors) {
 		this.visitors = visitors;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public String getDescription() {
+		return description;
 	}
 
+	public void setDescription(String description) {
+		StringBuilder sb = new StringBuilder(description);
+
+	    int i = 0;
+	    while ((i = sb.indexOf(" ", i + 100)) != -1) {
+	        sb.replace(i, i + 1, "\n");
+	    }
+		this.description = sb.toString();
+	}
+	
+	public String toString() {
+		return name;
+	}
 }

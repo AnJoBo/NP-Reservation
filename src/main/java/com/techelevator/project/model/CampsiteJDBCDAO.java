@@ -2,6 +2,8 @@ package com.techelevator.project.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,21 +22,21 @@ public class CampsiteJDBCDAO implements CampsiteDAO{
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public List<Campsite> getOpenReservations(String userInput1, String userInput2, String campgroundName) {
+	public List<Campsite> getOpenReservations(String userInput1, String userInput2, Campground campground) {
 		List<Campsite> openCampsiteList = new ArrayList<>();
 
-		String sqlGetReser = "SELECT site.*, campground.daily_fee " + 
+		String sqlGetReser = 
+				"SELECT site.*, campground.daily_fee * (DATE_PART('day', ?::date) - DATE_PART('day', ?::date)) as total_fee " +
 				"FROM site " + 
 				"JOIN reservation ON reservation.site_id = site.site_id " + 
 				"JOIN campground ON site.campground_id = campground.campground_id " + 
 				"Where (from_date <= ? OR from_date >= ?) " + 
-				"AND (to_date  <= ? OR to_date >= ?) " + 
-				"AND (campground.name= ?) " + 
+				"AND (to_date  <= ? OR to_date >= ?) " +
+				"AND campground.name = ? " +
 				"ORDER BY max_occupancy " + 
 				"LIMIT 5";
 
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetReser, parseDate(userInput1), parseDate(userInput2),
-				parseDate(userInput1), parseDate(userInput2), campgroundName);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetReser, parseDate(userInput2), parseDate(userInput1), parseDate(userInput1), parseDate(userInput2),parseDate(userInput1), parseDate(userInput2), campground.getName());
 
 		while (results.next()) {
 			Campsite theCampsite = mapRowToCampsite(results);
@@ -53,21 +55,16 @@ public class CampsiteJDBCDAO implements CampsiteDAO{
 		theCampsite.setAccessible(results.getBoolean("accessible"));
 		theCampsite.setMaximumLength(results.getInt("max_rv_length"));
 		theCampsite.setUtilities(results.getBoolean("utilities"));
-		theCampsite.setDailyFee(results.getBigDecimal("daily_fee"));
-
+		theCampsite.setTotalFee(results.getBigDecimal("total_fee"));
+		
 		return theCampsite;
 	}
+	
 	@Override
-	public Date parseDate(String userInput) {
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	public LocalDate parseDate(String userInput) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-		Date date = null;
-		try {
-			date = (Date) formatter.parse(userInput);
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		LocalDate date = LocalDate.parse(userInput, formatter);
 		return date;
 	}
 }

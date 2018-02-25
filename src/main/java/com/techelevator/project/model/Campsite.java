@@ -12,8 +12,8 @@ public class Campsite {
 	private int maximumLength;
 	private boolean utilities = false;
 	private BigDecimal dailyFee;
+	private String name;
 	private BigDecimal totalFee;
-	private long totalDays;
 	
 	
 	public Long getSiteId() {
@@ -58,25 +58,35 @@ public class Campsite {
 	public void setUtilities(boolean utilities) {
 		this.utilities = utilities;
 	}
-	
-	public void setTotalDays(long totalDays) {
-		this.totalDays = totalDays;
-	}
-	
-	public long getTotalDays() {
-		return totalDays;
-	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("%3s %3s %3s %6s %6.2f"
-		, siteNumber, maxOccupancy,maximumLength, utilities, (dailyFee.multiply(new BigDecimal(getTotalDays()))));
+		String availableUtilities = "";
+		if(utilities) {
+			availableUtilities = "Yes";
+		}
+		availableUtilities = "No";
+		
+		return String.format("%3s %3s %3s %-6s $%6.2f"
+		, siteNumber, maxOccupancy,maximumLength, availableUtilities, totalFee);
 	}
 	public BigDecimal getDailyFee() {
 		return dailyFee;
 	}
 	public void setDailyFee(BigDecimal dailyFee) {
 		this.dailyFee = dailyFee;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public BigDecimal getTotalFee() {
+		return totalFee;
+	}
+	public void setTotalFee(BigDecimal totalFee) {
+		this.totalFee = totalFee;
 	}
 
 

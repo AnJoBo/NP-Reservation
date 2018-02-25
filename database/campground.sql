@@ -41,7 +41,7 @@ CREATE TABLE reservation (
   name varChar(80) NOT NULL,
   from_date date NOT NULL,
   to_date date NOT NULL,
-  create_date date NOT NULL DEFAULT now(),
+  create_date timestamp DEFAULT now(), -- timestamp was 'date NOT NULL'
   CONSTRAINT pk_reservation_reservation_id PRIMARY KEY (reservation_id)
 );
 
