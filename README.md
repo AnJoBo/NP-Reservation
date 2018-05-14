@@ -1,3 +1,3 @@
-National Parks Reservation App
+# National Parks Reservation App
 
 This was the second capstone project from TechElevator.
